@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.payload.PostDto;
+import shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.payload.PostResponse;
 import shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.service.PostService;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class PostController {
 
     //get all posts rest api
     @GetMapping
-    public List<PostDto> getAllPosts(
+    public PostResponse getAllPosts(
             @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize
     ){

@@ -1,13 +1,14 @@
 package shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.service;
 
 import shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.payload.PostDto;
+import shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.payload.PostResponse;
 
 import java.util.List;
 
 public interface PostService{
     PostDto createPost(PostDto postDto);
 
-    List<PostDto> getAllPosts(int pageNo, int pageSize);
+    PostResponse getAllPosts(int pageNo, int pageSize);
 
     PostDto getPostById(long id);
 

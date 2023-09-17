@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.entity.Post;
 import shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.exception.ResourceNotFoundException;
 import shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.payload.PostDto;
+import shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.payload.PostResponse;
 import shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.repositories.PostRepository;
 import shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.service.PostService;
 
@@ -35,12 +36,21 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getAllPosts(int pageNo, int pageSize) {
+    public PostResponse getAllPosts(int pageNo, int pageSize) {
         //create pageable instance
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         Page<Post> posts = postRepository.findAll(pageable);
         List<Post> listOfPosts = posts.getContent();
-        return listOfPosts.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
+        List<PostDto> content =  listOfPosts.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
+
+        PostResponse postResponse = new PostResponse();
+        postResponse.setContent(content);
+        postResponse.setPageNo(posts.getNumber());
+        postResponse.setPageSize(posts.getSize());
+        postResponse.setTotalElements(posts.getTotalElements());
+        postResponse.setLast(posts.isLast());
+        return postResponse;
+
     }
 
 
