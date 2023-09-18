@@ -58,6 +58,22 @@ public class CommentServiceImp implements CommentService {
         return mapToDTO(comment);
     }
 
+    @Override
+    public CommentDto updateCommentById(Long postId, Long commentId, CommentDto commentRequest) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId+""));
+        // retrieve comment by id
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("comment", "id", commentId+""));
+
+        if (!comment.getPost().getId().equals(post.getId())) {
+            throw new BlogAPIException(HttpStatus.BAD_REQUEST, "comment does not belong to post");
+        }
+        comment.setName(commentRequest.getName());
+        comment.setEmail(commentRequest.getEmail());
+        comment.setBody(commentRequest.getBody());
+        Comment updatedComment = commentRepository.save(comment);
+        return mapToDTO(updatedComment);
+    }
+
     private CommentDto mapToDTO(Comment comment) {
         CommentDto commentDto = new CommentDto();
         commentDto.setId(comment.getId());
