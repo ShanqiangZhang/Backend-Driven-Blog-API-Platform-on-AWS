@@ -40,16 +40,16 @@ public class CommentServiceImp implements CommentService {
         commentDto.setId(comment.getId());
         commentDto.setName(comment.getName());
         commentDto.setEmail(comment.getEmail());
-        commentDto.setBody(commentDto.getBody());
+        commentDto.setBody(comment.getBody());
         return commentDto;
     }
 
     private Comment mapToEntity(CommentDto commentDto) {
         Comment comment = new Comment();
         comment.setId(commentDto.getId());
-        comment.setName(comment.getName());
-        comment.setBody(comment.getBody());
-        comment.setEmail(comment.getEmail());
+        comment.setName(commentDto.getName());
+        comment.setBody(commentDto.getBody());
+        comment.setEmail(commentDto.getEmail());
         return comment;
     }
 }
