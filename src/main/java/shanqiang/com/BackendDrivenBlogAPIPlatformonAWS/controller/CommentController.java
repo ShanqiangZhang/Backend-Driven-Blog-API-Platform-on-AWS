@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.payload.CommentDto;
 import shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.service.CommentService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 public class CommentController {
@@ -19,6 +21,11 @@ public class CommentController {
     public ResponseEntity<CommentDto> createComment(@PathVariable(value = "postId") long postId,
                                                     @RequestBody CommentDto commentDto) {
         return new ResponseEntity<>(commentService.createComment(postId,commentDto), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/posts/{postId}/comments")
+    public List<CommentDto> getCommentsByPostId(@PathVariable(value = "postId") long postId) {
+        return commentService.getCommentsByPostId(postId);
     }
 
 }

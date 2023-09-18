@@ -10,6 +10,9 @@ import shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.repositories.CommentRepos
 import shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.repositories.PostRepository;
 import shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.service.CommentService;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class CommentServiceImp implements CommentService {
     private CommentRepository commentRepository;
@@ -33,6 +36,12 @@ public class CommentServiceImp implements CommentService {
         //comment entity to DB
         Comment newComment = commentRepository.save(comment);
         return mapToDTO(newComment);
+    }
+
+    @Override
+    public List<CommentDto> getCommentsByPostId(long postId) {
+        List<Comment> comments = commentRepository.findByPostId(postId);
+        return comments.stream().map(comment -> mapToDTO(comment)).collect(Collectors.toList());
     }
 
     private CommentDto mapToDTO(Comment comment) {
