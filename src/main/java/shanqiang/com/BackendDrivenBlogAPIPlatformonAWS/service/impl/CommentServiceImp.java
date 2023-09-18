@@ -1,9 +1,11 @@
 package shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.entity.Comment;
 import shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.entity.Post;
+import shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.exception.BlogAPIException;
 import shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.exception.ResourceNotFoundException;
 import shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.payload.CommentDto;
 import shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.repositories.CommentRepository;
@@ -42,6 +44,18 @@ public class CommentServiceImp implements CommentService {
     public List<CommentDto> getCommentsByPostId(long postId) {
         List<Comment> comments = commentRepository.findByPostId(postId);
         return comments.stream().map(comment -> mapToDTO(comment)).collect(Collectors.toList());
+    }
+
+    @Override
+    public CommentDto getCommentById(Long postId, Long commentId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId+""));
+        // retrieve comment by id
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("comment", "id", commentId+""));
+
+        if (!comment.getPost().getId().equals(post.getId())) {
+            throw new BlogAPIException(HttpStatus.BAD_REQUEST, "comment does not belong to post");
+        }
+        return mapToDTO(comment);
     }
 
     private CommentDto mapToDTO(Comment comment) {
