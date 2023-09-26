@@ -50,4 +50,17 @@ public class GlobalExceptionHandle extends ResponseEntityExceptionHandler {
         });
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    public ResponseEntity<Object> handleResourceNotFoundException(MethodArgumentNotValidException exception, WebRequest webRequest) {
+//        Map<String, String> errors = new HashMap<>();
+//        exception.getBindingResult().getAllErrors().forEach((error) -> {
+//            String filedName = ((FieldError)error).getField();
+//            String message = error.getDefaultMessage();
+//            errors.put(filedName, message);
+//        });
+//        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+//    }
+
+
 }
