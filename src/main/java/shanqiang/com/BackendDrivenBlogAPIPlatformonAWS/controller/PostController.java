@@ -3,6 +3,7 @@ package shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.controller;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.payload.PostDto;
 import shanqiang.com.BackendDrivenBlogAPIPlatformonAWS.payload.PostResponse;
@@ -21,6 +22,7 @@ public class PostController {
     }
 
     //create blog post
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto) {
         return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
@@ -42,11 +44,14 @@ public class PostController {
         return ResponseEntity.ok(postService.getPostById(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<PostDto> updatePostById(@Valid @RequestBody PostDto postDto, @PathVariable(name = "id") long id) {
         PostDto postResponse = postService.updatePostById(postDto, id);
         return new ResponseEntity<>(postResponse, HttpStatus.OK);
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePostById(@PathVariable(name = "id") long id) {
